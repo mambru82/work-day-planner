@@ -13,7 +13,7 @@ var loadTasks = function () {
     console.log(timeValue, tasks);
     for (i=0; i<tasks.length; i++) {
     if (tasks[i].time === timeValue) {
-        console.log("found a match", tasks[i].task);
+        // console.log("found a match", tasks[i].task);
         var taskP = $("<p>")
             .text(tasks[i].task);
         $(this)
@@ -53,13 +53,20 @@ $(".btn").on("click", function () {
     // console.log(newText);
     // console.log(this);
 
-    var timeValue = $(this).parent().children(".time-value").contents().text().trim();
-    ampmCheck = timeValue[timeValue.length-2] + timeValue[timeValue.length-1];
-    console.log(timeValue, ampmCheck);
+    // var timeValue = $(this).parent().children(".time-value").contents().text().trim();
+    // ampmCheck = timeValue[timeValue.length-2] + timeValue[timeValue.length-1];
+    // console.log(timeValue, ampmCheck);
 
     var taskP = $("<p>")
     .text(newText);
 
+    $(this).parent().find("textarea").replaceWith(taskP);    
+    
+    for (i=0; i<tasks.length; i++) {
+        if (tasks[i].time === taskId) {
+            tasks.splice(i, 1);
+        }
+    }
     tasks.push({
         time: taskId,
         task: newText
@@ -68,15 +75,13 @@ $(".btn").on("click", function () {
     console.log(tasks);
     saveTasks();
 
-    $(this).parent().find("textarea").replaceWith(taskP);
     })
 
 var saveTasks = function() {
     localStorage.setItem("day-tasks", JSON.stringify(tasks));
 }
 
-setInterval($(".time-value").each(function () {
-    loadTasks();
+$(".time-value").each(function () {
     var timeValue = $(this).attr("id");
     // console.log(timeValue);
     segmentDay = moment().format("DD MM YY")
@@ -101,6 +106,6 @@ setInterval($(".time-value").each(function () {
     }
     
     // console.log(segmentDayTime);
-}), 50000);
-
+});
+loadTasks();
 
