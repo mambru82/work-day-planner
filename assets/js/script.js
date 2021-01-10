@@ -8,6 +8,10 @@ var loadTasks = function () {
         ]
     }
 }
+
+var currDay = moment().format("ddd, MMMM Do YYYY");
+console.log(currDay);
+$("#currentDay").append(currDay);
 $(".activity-text").on("click", "p", function(){
     var text = $(this)
         .text()
@@ -21,7 +25,10 @@ $(".activity-text").on("click", "p", function(){
     textInput.trigger("focus");
     // console.log(textInput);
     
-    $(".btn").on("click", function () {
+    
+})
+
+$(".btn").on("click", function () {
     var newText = $(this).parent().find("textarea").val();
     console.log(newText);
     // console.log(this);
@@ -34,18 +41,44 @@ $(".activity-text").on("click", "p", function(){
     .text(newText);
 
     $(this).parent().find("textarea").replaceWith(taskP);
-
     })
+
+$.each($(".row"), function () {
+    var timeValue = $(".time-value").attr("id");
+    console.log(timeValue);
+    segmentDay = moment().format("DD MM YY")
+    segmentDayTime = moment(segmentDay + " " + timeValue, "DD MM YY HH");
+    timeDiff = segmentDayTime.diff(moment(), 'minutes');
+    
+    if (timeDiff<60 && timeDiff>0) {
+        $(".col-10")
+        .removeClass("[^=bg]")
+        .addClass("bg-danger")
+        }
+    else if (timeDiff > 60) {
+        $(".col-10")
+        .removeClass("[^=bg")
+        .addClass("bg-success")
+    }
+    else {
+        $(".col-10")
+        .removeClass("[^=bg")
+        .addClass("bg-secondary")
+    }
+    
+    console.log(segmentDayTime);
+
+    // ampmCheck = timeValue[timeValue.length-2] + timeValue[timeValue.length-1];
+    // if (ampmCheck === "AM") {
+    //     timeArr = timeValue.split("");
+    //     timeArr.splice(timeArr.length-2,2,"");
+    //     timeValue = parseInt(timeArr.join(""));
+    //  } else {
+    //     timeArr = timeValue.split("");
+    //     timeArr.splice(timeArr.length-2,2,"");
+    //     timeValue = parseInt(timeArr.join("")) + 12;
+    //  }
+    // console.log(timeArr, timeValue);
 })
 
-var timeCheck = function () {
-    var timeValue = $(".time-9").text().trim();
-    ampmCheck = timeValue[timeValue.length-2] + timeValue[timeValue.length-1];
-    if (ampmCheck === "AM") {
-        timeNumber = timeValue.splice(timeValue.length-2, 2, "");
-    } else {
-        timeNumber = timeValue.splice(timeValue.length-2, 2, "");
-    }
-    console.log(timeNumber, ampmCheck);
-    console.log(timeValue, ampmCheck);
-}
+
