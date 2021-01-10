@@ -43,25 +43,26 @@ $(".btn").on("click", function () {
     $(this).parent().find("textarea").replaceWith(taskP);
     })
 
-$.each($(".row"), function () {
-    var timeValue = $(".time-value").attr("id");
-    console.log(timeValue);
+$(".time-value").each(function () {
+    var timeValue = $(this).attr("id");
+    // console.log(timeValue);
     segmentDay = moment().format("DD MM YY")
     segmentDayTime = moment(segmentDay + " " + timeValue, "DD MM YY HH");
     timeDiff = segmentDayTime.diff(moment(), 'minutes');
+    console.log(timeDiff);
     
     if (timeDiff<60 && timeDiff>0) {
-        $(".col-10")
+        $(this).siblings(".col-10")
         .removeClass("[^=bg]")
         .addClass("bg-danger")
         }
     else if (timeDiff > 60) {
-        $(".col-10")
+        $(this).siblings(".col-10")
         .removeClass("[^=bg")
         .addClass("bg-success")
     }
     else {
-        $(".col-10")
+        $(this).siblings(".col-10")
         .removeClass("[^=bg")
         .addClass("bg-secondary")
     }
