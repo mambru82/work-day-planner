@@ -6,11 +6,29 @@ var loadTasks = function () {
             { time: "",
               task: "" }
         ]
+    } 
+
+    $(".time-value").each(function() {
+    var timeValue = $(this).attr("id");
+    console.log(timeValue, tasks);
+    for (i=0; i<tasks.length; i++) {
+    if (tasks[i].time === timeValue) {
+        console.log("found a match", tasks[i].task);
+        var taskP = $("<p>")
+            .text(tasks[i].task);
+        $(this)
+            .siblings(".activity-text")
+            .find("p")
+            .replaceWith(taskP);
     }
+    }
+
+    })
+
 }
 
 var currDay = moment().format("ddd, MMMM Do YYYY");
-console.log(currDay);
+// console.log(currDay);
 $("#currentDay").append(currDay);
 $(".activity-text").on("click", "p", function(){
     var text = $(this)
@@ -24,13 +42,15 @@ $(".activity-text").on("click", "p", function(){
     $(this).replaceWith(textInput);
     textInput.trigger("focus");
     // console.log(textInput);
-    
+        
     
 })
 
 $(".btn").on("click", function () {
+    var taskId = $(this).siblings(".time-value").attr("id");
+    // console.log(taskId);
     var newText = $(this).parent().find("textarea").val();
-    console.log(newText);
+    // console.log(newText);
     // console.log(this);
 
     var timeValue = $(this).parent().children(".time-value").contents().text().trim();
@@ -40,10 +60,23 @@ $(".btn").on("click", function () {
     var taskP = $("<p>")
     .text(newText);
 
+    tasks.push({
+        time: taskId,
+        task: newText
+    });
+
+    console.log(tasks);
+    saveTasks();
+
     $(this).parent().find("textarea").replaceWith(taskP);
     })
 
-$(".time-value").each(function () {
+var saveTasks = function() {
+    localStorage.setItem("day-tasks", JSON.stringify(tasks));
+}
+
+setInterval($(".time-value").each(function () {
+    loadTasks();
     var timeValue = $(this).attr("id");
     // console.log(timeValue);
     segmentDay = moment().format("DD MM YY")
@@ -67,19 +100,7 @@ $(".time-value").each(function () {
         .addClass("bg-secondary")
     }
     
-    console.log(segmentDayTime);
-
-    // ampmCheck = timeValue[timeValue.length-2] + timeValue[timeValue.length-1];
-    // if (ampmCheck === "AM") {
-    //     timeArr = timeValue.split("");
-    //     timeArr.splice(timeArr.length-2,2,"");
-    //     timeValue = parseInt(timeArr.join(""));
-    //  } else {
-    //     timeArr = timeValue.split("");
-    //     timeArr.splice(timeArr.length-2,2,"");
-    //     timeValue = parseInt(timeArr.join("")) + 12;
-    //  }
-    // console.log(timeArr, timeValue);
-})
+    // console.log(segmentDayTime);
+}), 50000);
 
 
