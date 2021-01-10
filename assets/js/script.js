@@ -58,12 +58,12 @@ $(".time-value").each(function () {
         }
     else if (timeDiff > 60) {
         $(this).siblings(".col-10")
-        .removeClass("[^=bg")
+        .removeClass("[^=bg]")
         .addClass("bg-success")
     }
     else {
         $(this).siblings(".col-10")
-        .removeClass("[^=bg")
+        .removeClass("[^=bg]")
         .addClass("bg-secondary")
     }
     
